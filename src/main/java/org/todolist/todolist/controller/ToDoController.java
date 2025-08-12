@@ -3,14 +3,19 @@ package org.todolist.todolist.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.todolist.todolist.entity.Todo;
+import org.todolist.todolist.repository.TodoRepository;
 import org.todolist.todolist.service.TodoService;
 
-import java.time.Instant;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
 public class ToDoController {
-    private final TodoService todoService = new TodoService();
+    private final TodoService todoService;
+
+    public ToDoController(TodoService todoService) {
+        this.todoService = todoService;
+    }
 
     @GetMapping("/ping")
     public String ping() {
@@ -18,7 +23,7 @@ public class ToDoController {
     }
 
     @GetMapping("/todos")
-    public List<Todo> getAllTodos() {
-        return todoService.getAll();
+    public List<Todo> getAllTodos() throws SQLException {
+        return todoService.listAll();
     }
 }
