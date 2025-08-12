@@ -1,6 +1,7 @@
 package org.todolist.todolist.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.todolist.todolist.entity.Todo;
 import org.todolist.todolist.repository.TodoRepository;
@@ -23,7 +24,7 @@ public class ToDoController {
     }
 
     @GetMapping("/todos")
-    public List<Todo> getAllTodos() throws SQLException {
-        return todoService.listAll();
+    public List<Todo> getAllTodos(@RequestParam(required = false) String status) throws SQLException {
+        return todoService.listAll(status);
     }
 }

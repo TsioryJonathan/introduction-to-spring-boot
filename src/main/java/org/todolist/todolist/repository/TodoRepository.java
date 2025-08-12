@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TodoRepository {
@@ -38,4 +39,26 @@ public class TodoRepository {
             return todos;
         }
     }
+
+    public List<Todo> findAllByCompleted(boolean completed) throws SQLException {
+        String sql = "SELECT * FROM todos WHERE completed = ? ORDER BY id DESC";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setBoolean(1, completed);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Todo> out = new ArrayList<>();
+                while (rs.next()) {
+                    out.add(new Todo(
+                            rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getBoolean("completed"),
+                            rs.getTimestamp("start_datetime").toInstant(),
+                            rs.getTimestamp("end_datetime") == null ? null : rs.getTimestamp("end_datetime").toInstant()
+                    ));
+                }
+                return out;
+            }
+        }
+}
 }
