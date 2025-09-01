@@ -35,4 +35,10 @@ public class ToDoController {
     public List<Todo> deleteTodo(@PathVariable int id) throws SQLException {
         return todoService.deleteTodo(id);
     }
+    @PutMapping("/todos/{id}")
+    public Todo updateTodo(@PathVariable int id, @RequestBody Todo todo) throws SQLException {
+        todo.setId(id);
+        return todoService.updateTodo(todo);
+    }
+
 }

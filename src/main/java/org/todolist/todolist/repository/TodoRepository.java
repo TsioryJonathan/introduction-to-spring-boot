@@ -90,4 +90,30 @@ public class TodoRepository {
             return findAll();
         }
     }
+
+    public Todo updateTodo(Todo todo) throws SQLException {
+        String sql = "UPDATE todos " +
+                "SET title = ?, description = ?, completed = ?, start_datetime = ?, end_datetime = ? " +
+                "WHERE id = ?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, todo.getTitle());
+            ps.setString(2, todo.getDescription());
+            ps.setBoolean(3, todo.isCompleted());
+            ps.setTimestamp(4, Timestamp.from(todo.getStartDatetime()));
+            if (todo.getEndDatetime() != null) {
+                ps.setTimestamp(5, Timestamp.from(todo.getEndDatetime()));
+            } else {
+                ps.setNull(5, Types.TIMESTAMP);
+            }
+            ps.setInt(6, todo.getId());
+
+            ps.executeUpdate();
+
+            return todo;
+        }
+    }
+
 }

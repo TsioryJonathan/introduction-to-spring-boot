@@ -32,4 +32,9 @@ public class TodoService {
     public List<Todo> deleteTodo(int id) throws SQLException {
         return repository.deleteTodo(id);
     }
+
+    public Todo updateTodo(Todo todo) throws SQLException {
+        return repository.updateTodo(todo);
+    }
+
 }
