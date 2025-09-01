@@ -4,10 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.todolist.todolist.entity.Todo;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,4 +58,25 @@ public class TodoRepository {
             }
         }
 }
+
+    public List<Todo> createTodo(Todo todo) throws SQLException {
+        String sql = "INSERT INTO todos(title, description, completed, start_datetime, end_datetime) VALUES (?, ?, ?, ?, ?)";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+            ps.setString(1, todo.getTitle());
+            ps.setString(2, todo.getDescription());
+            ps.setBoolean(3, todo.isCompleted());
+            ps.setTimestamp(4, Timestamp.from(todo.getStartDatetime()));
+            if (todo.getEndDatetime() != null) {
+                ps.setTimestamp(5, Timestamp.from(todo.getEndDatetime()));
+            } else {
+                ps.setNull(5, Types.TIMESTAMP);
+            }
+
+            ps.executeUpdate();
+
+            return findAll();
+        }
+    }
 }

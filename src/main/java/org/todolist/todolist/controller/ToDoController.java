@@ -1,8 +1,6 @@
 package org.todolist.todolist.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.todolist.todolist.entity.Todo;
 import org.todolist.todolist.repository.TodoRepository;
 import org.todolist.todolist.service.TodoService;
@@ -26,5 +24,15 @@ public class ToDoController {
     @GetMapping("/todos")
     public List<Todo> getAllTodos(@RequestParam(required = false) String status) throws SQLException {
         return todoService.listAll(status);
+    }
+
+    @PostMapping("/todos")
+    public List<Todo> createTodo(@RequestBody Todo todo) throws SQLException {
+        return todoService.createTodo(todo);
+    }
+
+    @DeleteMapping("/todos/{id}")
+    public List<Todo> deleteTodo(@PathVariable int id) throws SQLException {
+        return todoService.deletTodo(id);
     }
 }

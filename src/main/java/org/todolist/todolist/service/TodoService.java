@@ -21,4 +21,11 @@ public class TodoService {
         boolean statusBool = status.equals("done");
         return repository.findAllByCompleted(statusBool);
     }
+
+    public List<Todo> createTodo(Todo todo) throws SQLException {
+        if (todo== null){
+            return null;
+        }
+        return repository.createTodo(todo);
+    }
 }
