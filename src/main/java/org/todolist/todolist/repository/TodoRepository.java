@@ -79,4 +79,15 @@ public class TodoRepository {
             return findAll();
         }
     }
+
+    public List<Todo> deleteTodo(int id) throws SQLException {
+        String sql = "DELETE FROM todos where id= ?";
+        try(Connection con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1 , id);
+            ps.executeUpdate();
+
+            return findAll();
+        }
+    }
 }

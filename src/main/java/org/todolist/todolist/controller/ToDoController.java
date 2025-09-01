@@ -33,6 +33,6 @@ public class ToDoController {
 
     @DeleteMapping("/todos/{id}")
     public List<Todo> deleteTodo(@PathVariable int id) throws SQLException {
-        return todoService.deletTodo(id);
+        return todoService.deleteTodo(id);
     }
 }

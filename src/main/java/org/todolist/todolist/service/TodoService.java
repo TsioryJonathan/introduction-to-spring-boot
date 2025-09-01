@@ -28,4 +28,8 @@ public class TodoService {
         }
         return repository.createTodo(todo);
     }
+
+    public List<Todo> deleteTodo(int id) throws SQLException {
+        return repository.deleteTodo(id);
+    }
 }
