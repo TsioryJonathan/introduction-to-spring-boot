@@ -35,6 +35,9 @@ public class TodoRepository {
             }
             return todos;
         }
+        catch(SQLException e){
+            throw new SQLException("Error retrieving all todos", e);
+        }
     }
 
     public List<Todo> findAllByCompleted(boolean completed) throws SQLException {
@@ -56,6 +59,10 @@ public class TodoRepository {
                 }
                 return out;
             }
+            catch(SQLException e){
+                throw new SQLException("Error retrieving todos by completed status", e);
+            }
+        }
         }
 }
 
@@ -78,6 +85,9 @@ public class TodoRepository {
 
             return findAll();
         }
+        catch(SQLException e){
+            throw new SQLException("Error creating todo", e);
+        }
     }
 
     public List<Todo> deleteTodo(int id) throws SQLException {
@@ -88,6 +98,8 @@ public class TodoRepository {
             ps.executeUpdate();
 
             return findAll();
+        }catch(SQLException e){
+            throw new SQLException("Error deleting todo with id " + id, e);
         }
     }
 
@@ -113,6 +125,8 @@ public class TodoRepository {
             ps.executeUpdate();
 
             return todo;
+        }catch(SQLException e){
+            throw new SQLException("Error updating todo with id " + todo.getId(), e);
         }
     }
 
